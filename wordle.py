@@ -1,9 +1,10 @@
-from english_words import english_words_lower_alpha_set
-import string
+import ast, string, sys
+
+with open('wordleWords.txt') as f:
+    lines = f.readlines()
+words = [ast.literal_eval(line) for line in lines][0]
 
 def wordle():
-    words = [word for word in english_words_lower_alpha_set if len(word) == 5 and '.' not in word] 
-    deleteInvalidWords(words)
     frequencyVals = letterFrequency(words)
     wordVals = wordEval(words, frequencyVals)
     
@@ -25,13 +26,13 @@ def wordle():
         
         if choice == '1':
             print('\nword found, ending program')
-            return 
+            return
         else:
             if attempt == 6:
                 print('\nword not found, ending program')
                 return
             eleminateWords(words, guess)
-    
+
 
 def eleminateWords(words, guess):
     print('\ninput 5 digit sequence representing wordle colors: black(0) yellow(1) green(2)')
@@ -79,11 +80,6 @@ def validSequence(seq):
         return False
     return True
 
-def deleteInvalidWords(words):
-    lst = ['latin', 'italy']
-    for word in lst:
-        words.remove(word)
-
 def letterFrequency(words):
     listAlphabet = list(string.ascii_lowercase)
     frequencyVals = {}
@@ -112,3 +108,5 @@ def bestWord(words, wordVals):
         if wordVals[word] > wordVals[maxWord]:
             maxWord = word 
     return maxWord
+
+wordle()
